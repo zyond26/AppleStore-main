@@ -42,12 +42,11 @@ pipeline {
                 }
             }
         }
-      
+    }
 
     post {
         success {
             echo 'Build, test, and publish successful!'
         }
     }
-}
 }
