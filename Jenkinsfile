@@ -42,14 +42,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                script {
-                    withCredential([])
-                }
-            }
-        }
-    }
+      
 
     post {
         success {
