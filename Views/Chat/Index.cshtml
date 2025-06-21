@@ -1,0 +1,71 @@
+@{
+    ViewBag.Title = "Quản lý Tin nhắn";
+    Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+}
+
+<div class="section py-5">
+    <div class="container">
+        <h2 class="mb-4">Quản lý Tin nhắn</h2>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <script>
+                alert("@Html.Raw(TempData["SuccessMessage"])");
+            </script>
+        }
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Tin nhắn</th>
+                        <th>Ngày gửi</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Model)
+                    {
+                        <tr>
+                            <td>@message.Name</td>
+                            <td>@message.Email</td>
+                            <td>@message.Message</td>
+                            <td>@message.CreatedAt?.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <!-- Nút Xóa -->
+                                    <form asp-action="DeleteConfirmed" asp-route-id="@message.Id" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Nút Trả lời hoặc Đã trả lời -->
+                                    @if (string.IsNullOrEmpty(message.Reply))
+                                    {
+                                        <a href="@Url.Action("Reply", "Chat", new { id = message.Id })" class="btn btn-info btn-sm">
+                                            <i class="bi bi-reply-fill"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <i class="bi bi-check2-circle"></i>
+                                        </button>
+                                    }
+
+                                    <!-- Nút Chi tiết -->
+                                    <a href="@Url.Action("Details", "Chat", new { id = message.Id })" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

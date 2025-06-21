@@ -1,0 +1,182 @@
+﻿@model IEnumerable<WebsiteTMDT.Data.User>
+
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+    Layout = "~/Views/Shared/_AdminDashBoard.cshtml";
+}
+
+@if (TempData["LockSuccess"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["LockSuccess"])");
+    </script>
+}
+@if (TempData["UnLockSuccess"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["UnLockSuccess"])");
+    </script>
+}
+@if (TempData["CreateUser"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["CreateUser"])");
+    </script>
+}
+@if (TempData["EditUser"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["EditUser"])");
+    </script>
+}
+
+<!-- Main Section -->
+<main class="container py-4">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-primary mb-4 text-center">Quản lý người dùng</h2>
+
+            <!-- Bộ lọc -->
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <form method="get">
+                        <div class="row align-items-center g-3">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" name="searchTerm" class="form-control" placeholder="Tìm kiếm tên hoặc email..." value="@ViewBag.SearchTerm" />
+                                    <button type="submit" class="btn btn-outline-secondary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" name="createdDate" class="form-control" value="@ViewBag.CreatedDate" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" name="lastOrderDate" class="form-control" value="@ViewBag.LastOrderDate" />
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center gap-2">
+                                <button type="submit" class="btn btn-primary w-auto">
+                                    <i class="fas fa-filter"></i> Lọc
+                                </button>
+                                <a href="@Url.Action("Index")" class="btn btn-secondary">
+                                    <i class="fas fa-sync-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5>Danh sách người dùng</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light text-center align-middle">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Địa Chỉ</th>
+                                <th>Ngày Tạo</th>
+                                <th>Vai Trò</th>
+                                <th>Trạng Thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="9" class="text-center text-muted">Không có người dùng nào</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>#@item.UserId</td>
+                                        <td>@item.FullName</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td>@item.Address</td>
+                                        <td>@item.CreatedAt?.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.Role.RoleName</td>
+                                        <td>
+                                            @if (item.IsLocked == true)
+                                            {
+                                                <span class="badge bg-danger">Bị khóa</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">Hoạt động</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-sm btn-warning me-1" title="Chỉnh sửa">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-sm btn-danger me-1" title="Xóa">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-sm btn-info me-1" title="Xem chi tiết">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                @if (item.IsLocked == true)
+                                                {
+                                                    <a asp-controller="Account" asp-action="UnlockAccount" asp-route-userId="@item.UserId" class="btn btn-success btn-sm" title="Mở khóa">
+                                                        <i class="fas fa-lock-open"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-controller="Account" asp-action="LockAccount" asp-route-userId="@item.UserId" class="btn btn-danger btn-sm" title="Khóa tài khoản">
+                                                        <i class="fas fa-lock"></i>
+                                                    </a>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Phân trang -->
+                <div class="d-flex justify-content-center mt-3">
+                    <nav>
+                        <ul class="pagination">
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = ViewBag.CurrentPage - 1 })">«</a>
+                                </li>
+                            }
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                                </li>
+                            }
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = ViewBag.CurrentPage + 1 })">»</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <a asp-action="Create" class="btn btn-success mt-3">
+                <i class="fas fa-plus"></i> Thêm Người Dùng
+            </a>
+        </div>
+    </div>
+</main>

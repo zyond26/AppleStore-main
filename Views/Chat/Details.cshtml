@@ -1,0 +1,52 @@
+﻿@model WebsiteTMDT.Data.ChatMessage
+
+@{
+    ViewBag.Title = "Chi tiết Tin nhắn";
+    Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+}
+
+<div class="section py-5">
+    <div class="container">
+        <h2 class="mb-4">Chi tiết Tin nhắn</h2>
+
+        <div class="card shadow-sm p-4">
+            <div class="mb-3">
+                <strong>Tên người gửi:</strong> @Model.Name
+            </div>
+            <div class="mb-3">
+                <strong>Email người gửi:</strong> @Model.Email
+            </div>
+            <div class="mb-3">
+                <strong>Ngày gửi:</strong> @Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm:ss")
+            </div>
+            <div class="mb-3">
+                <strong>Tin nhắn:</strong>
+                <div class="border p-3 rounded bg-light">
+                    @Model.Message
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Reply))
+            {
+                <div class="mb-3">
+                    <h5><i class="bi bi-reply-fill"></i> Câu trả lời:</h5>
+                    <div class="border p-3 rounded bg-light">
+                        @Model.Reply
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3 text-muted">
+                    <em><i class="bi bi-chat-dots"></i> Chưa có câu trả lời.</em>
+                </div>
+            }
+
+            <div class="mt-4">
+                <a href="@Url.Action("Index", "Chat")" class="btn btn-primary">
+                    <i class="bi bi-arrow-left-circle"></i> Quay lại danh sách
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html>
+<head>
+	<title>@ViewData["Title"]</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Official Signup Form Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!-- fonts -->
+	<link href="//fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+	<!-- /fonts -->
+	<!-- css -->
+	<link href="~/css2/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="~/css2/style.css" rel='stylesheet' type='text/css' media="all" />
+</head>
+<body>
+	<h1 class="w3ls">@ViewData["Title"]</h1>
+	<div class="content-w3ls">
+		<div class="content-agile1">
+			<h2 class="agileits1">Official</h2>
+			<p class="agileits2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</div>
+		<div class="content-agile2">
+			@RenderBody()
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<!-- Script Toggle Show/Hide Password -->
+	<script>
+		const togglePassword = document.getElementById('togglePassword');
+		const password = document.getElementById('password');
+
+		togglePassword.addEventListener('click', function () {
+			// Toggle the type attribute
+			const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+			password.setAttribute('type', type);
+
+			// Toggle icon
+			this.classList.toggle('fa-eye');
+			this.classList.toggle('fa-eye-slash');
+		});
+	</script>
+
+	<!-- Script xử lý Quên Mật Khẩu -->
+	<script>
+		function showForgotForm() {
+			document.getElementById('loginSection').style.display = 'none';
+			document.getElementById('forgotForm').style.display = 'block';
+		}
+
+		function backToLogin() {
+			document.getElementById('forgotForm').style.display = 'none';
+			document.getElementById('forgotMsg').innerText = '';
+			document.getElementById('loginSection').style.display = 'block';
+		}
+
+		function submitForgotPassword() {
+			var email = document.getElementById('forgotEmail').value;
+			if (email === "") {
+				document.getElementById('forgotMsg').innerText = "Vui lòng nhập email.";
+				return;
+			}
+
+			fetch('/Account/ForgotPassword', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email: email })
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					document.getElementById('forgotMsg').style.color = 'green';
+					document.getElementById('forgotMsg').innerText = "Một liên kết đặt lại mật khẩu đã được gửi đến email.";
+				} else {
+					document.getElementById('forgotMsg').style.color = 'red';
+					document.getElementById('forgotMsg').innerText = data.message;
+				}
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿@model WebsiteTMDT.Data.ChatMessage
+
+@{
+    ViewBag.Title = "Trả lời Tin nhắn";
+    Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+}
+
+<div class="section py-5">
+    <div class="container">
+        <h2 class="mb-4">Trả lời Tin nhắn</h2>
+
+        @if (Model.Reply != null)
+        {
+            <div class="alert alert-info">
+                <p><strong>Câu trả lời:</strong> @Model.Reply</p>
+                <p><strong>Trạng thái:</strong> Tin nhắn đã được trả lời.</p>
+            </div>
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Reply" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <label for="reply" class="form-label">Câu trả lời:</label>
+                            <textarea class="form-control" name="reply" id="reply" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Gửi Câu trả lời</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

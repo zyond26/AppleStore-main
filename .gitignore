@@ -1,0 +1,57 @@
+﻿# Ignore Visual Studio temporary files, build results, and user-specific files
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Uncomment if you have tasks that create the project's static files in wwwroot
+# wwwroot/
+
+# Visual Studio 2019 - .vs folder (IDE metadata)
+.vs/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Azure Web Apps publish settings
+*.PublishSettings
+
+# Rider IDE (if you use JetBrains Rider)
+.idea/
+
+# Others
+*.dbmdl
+*.bak
+*.backup
+*.log
+*.vspscc
+*.vssscc
+
+# NPM packages
+node_modules/
+
+# VS Code settings
+.vscode/
+
+# Local environment secrets
+.env
+.env.*
+
+# MacOS files
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db

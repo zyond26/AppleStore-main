@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Đăng Nhập";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div id="loginSection">
+    <form id="loginForm" method="post" action="/Account/Login" style="max-width: 400px; margin: auto;">
+        <br><br>
+        @if (ViewBag.Error != null)
+        {
+            <div style="color: red; text-align: center; margin-top: 10px;">
+                @ViewBag.Error
+            </div>
+        }
+        <br>
+        <div class="form-control w3layouts">
+            <input type="email" id="email" name="email" placeholder="Email" required="">
+        </div>
+
+        <div class="form-control w3layouts" style="position: relative;">
+            <input type="password" id="password" name="password" placeholder="Mật Khẩu" required="">
+            <i id="togglePassword" class="fa fa-eye"
+               style="position: absolute; right: 45px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 20px; color: #888"></i>
+        </div>
+
+        <input type="submit" class="register" value="Đăng Nhập">
+
+        <p class="wthree w3l">
+            <a href="javascript:void(0);" class="forgot-password" onclick="showForgotForm()">Quên mật khẩu?</a>
+        </p>
+    </form>
+
+    <p class="wthree w3l">Hoặc Đăng Nhập Bằng</p>
+    <ul class="social-agileinfo wthree2">
+        <li><a asp-action="ExternalLogin" asp-route-provider="Facebook"><i class="fa fa-facebook"></i></a></li>
+        <li><a asp-action="ExternalLogin" asp-route-provider="Google"><i class="fa fa-google"></i></a></li>
+    </ul>
+
+    <br>
+    <p class="wthree w3l">Bạn chưa có tài khoản? <a asp-action="Register">Đăng kí ngay</a></p>
+</div>
+
+<!-- Form Quên mật khẩu -->
+<div id="forgotForm" style="display:none; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; max-width: 425px; background-color: #f9f9f9;">
+    <h4 style="margin-bottom: 20px; color: #333; text-align: center;">🔒 Khôi phục mật khẩu</h4>
+
+    <input type="email"
+           id="forgotEmail"
+           placeholder="Nhập email của bạn"
+           required
+           style="width: 92%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+
+    <button type="button"
+            onclick="submitForgotPassword()"
+            style="width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-bottom: 10px;">
+        Gửi yêu cầu
+    </button>
+
+    <button type="button"
+            onclick="backToLogin()"
+            style="width: 100%; padding: 12px; background-color: #6c757d; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+        Quay lại
+    </button>
+
+    <div id="forgotMsg" style="color: red; margin-top: 15px; text-align: center;"></div>
+</div>
+
