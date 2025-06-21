@@ -42,6 +42,21 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                script {
+                    withCredential([usernamePassword(credentialId: 'coreuser',passwordVariable: 'CREDENTIAL_PASSWORD',usernameVariable: 'CREDENTIAL_USERNAME')]){
+                    powershell '''
+
+                    $credentials = New-Object System.Management.Automation.PSCredential($env:CREDENTIAL_USERNAME,(ConverTo-SecureString $env:CREDENTIAL_PASSWORD -AsPlainText -Force))
+                    
+                    Copy-Item -path 'publish\\*' -Destination 'X:\' -force
+
+
+                    }
+                }
+            }
+        }
     }
 
     post {
